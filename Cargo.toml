@@ -1,0 +1,18 @@
+[package]
+name = "template"
+version = "0.1.0"
+edition = "2021"
+build = "build.rs"
+
+[package.metadata.winres]
+FileDescription = "template description :^)"
+
+[dependencies]
+anyhow = "1.0.61"
+
+[build-dependencies]
+# winres project
+winres = "0.1"
+
+[patch.crates-io]
+winres = { git = "https://github.com/sandydoo/winres", branch = "bugfix/fix-linking" }
