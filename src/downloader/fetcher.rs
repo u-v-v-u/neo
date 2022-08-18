@@ -17,7 +17,7 @@ fn parse_posts(posts: Posts, use_dictionary: bool) -> Result<Vec<DownloadImage>>
     for post in posts.posts {
         images.push(DownloadImage {
             url: post.file.url.clone(),
-            size: post.file.size.clone(),
+            size: post.file.size,
         });
 
         if !dictionary.contains_key(&post.file.md5) && use_dictionary {

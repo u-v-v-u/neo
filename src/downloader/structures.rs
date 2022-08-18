@@ -4,19 +4,22 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug)]
 pub struct DownloadImage {
-  pub url: String,
-  pub size: i64
+    pub url: String,
+    pub size: i64,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct Dictionary {
-  pub entries: HashMap<String, DictionaryEntry>
+    pub entries: HashMap<String, DictionaryEntry>,
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct DictionaryEntry {
-  pub md5: String,
-  pub ext: String
+    pub md5: String,
+    pub ext: String,
+    pub url: String,
+    pub rating: String,
+    pub id: i64
 }
 
 #[derive(Debug, Deserialize, Serialize)]
@@ -25,7 +28,7 @@ pub struct Configuration {
     pub output: Option<String>,
     pub limit: u8,
     pub sfw: Option<bool>,
-    pub dictionary: Option<bool>
+    pub dictionary: Option<bool>,
 }
 
 #[derive(Serialize, Deserialize)]
