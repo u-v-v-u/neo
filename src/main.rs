@@ -19,6 +19,7 @@ fn main() -> Result<()> {
         config.output.unwrap_or("./downloads".to_string()),
         config.limit,
         config.sfw.unwrap_or(false),
+        config.dictionary.unwrap_or(false)
     )?;
 
     Ok(())

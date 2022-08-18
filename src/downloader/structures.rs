@@ -24,7 +24,8 @@ pub struct Configuration {
     pub tags: String,
     pub output: Option<String>,
     pub limit: u8,
-    pub sfw: Option<bool>
+    pub sfw: Option<bool>,
+    pub dictionary: Option<bool>
 }
 
 #[derive(Serialize, Deserialize)]
