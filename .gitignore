@@ -1,2 +1,5 @@
 /target
 release
+config.yml
+downloads
+dictionary.json
