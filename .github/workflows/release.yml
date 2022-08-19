@@ -28,7 +28,7 @@ jobs:
       run: earthly --version
     - name: Run build
       run: earthly +build-windows --use-inline-cache --save-inline-cache
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: x86_64-pc-windows-gnu
         path: ${{ github.workspace }}/release/
@@ -55,7 +55,7 @@ jobs:
       run: earthly --version
     - name: Run build
       run: earthly +build-linux --use-inline-cache --save-inline-cache
-    - uses: actions/upload-artifact@v2
+    - uses: actions/upload-artifact@v3
       with:
         name: x86_64-unknown-linux-gnu
         path: ${{ github.workspace }}/release
