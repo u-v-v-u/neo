@@ -1,5 +1,5 @@
 use crate::downloader::structures::{Dictionary, DictionaryEntry, Post};
-use anyhow::Result;
+use anyhow::{Context, Result};
 use serde_json::{from_str, json, to_string_pretty};
 use std::{
     env,
@@ -21,7 +21,7 @@ pub fn write(post: Post) -> Result<()> {
     let path = format!("{}/dictionary.json", env::current_dir()?.to_str().unwrap());
     let pretty = to_string_pretty(&content)?;
 
-    fs_write(path, pretty)?;
+    fs_write(path, pretty).with_context(|| "Failure to write to Dictionary")?;
 
     Ok(())
 }
@@ -38,7 +38,7 @@ pub fn read() -> Result<Dictionary> {
         fs_write(&path, pretty)?;
     }
 
-    let file_content = read_to_string(path)?;
+    let file_content = read_to_string(path).with_context(|| "Failure to read Dictionary")?;
     let dictionary: Dictionary = from_str(&file_content)?;
 
     Ok(dictionary)

@@ -15,11 +15,11 @@ pub struct Dictionary {
 
 #[derive(Serialize, Deserialize)]
 pub struct DictionaryEntry {
+    pub id: i64,
     pub md5: String,
-    pub ext: String,
-    pub url: String,
     pub rating: String,
-    pub id: i64
+    pub url: String,
+    pub ext: String
 }
 
 #[derive(Debug, Deserialize, Serialize)]

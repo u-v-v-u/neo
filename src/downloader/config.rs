@@ -5,13 +5,10 @@ use std::fs::File;
 use std::path::Path;
 
 pub fn read(path: &Path) -> Result<Configuration> {
-    let reader = File::open(path).with_context(|| {
-      format!("Non-Existent configuration path")
-    });
+    let reader = File::open(path).with_context(|| format!("Non-Existent configuration path"));
 
-    let conf: Result<Configuration> = from_reader(reader?).with_context(|| {
-      format!("Failed to read configuration")
-    });
+    let conf: Result<Configuration> =
+        from_reader(reader?).with_context(|| format!("Failed to read configuration"));
 
     return conf;
 }

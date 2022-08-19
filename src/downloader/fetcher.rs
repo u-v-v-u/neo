@@ -1,6 +1,7 @@
 use super::{dictionary, structures::DownloadImage};
 use crate::downloader::structures::Posts;
-use anyhow::Result;
+use anyhow::{Context, Result};
+use loading::Loading;
 use once_cell::sync::Lazy;
 use reqwest::blocking::Client;
 use reqwest::{header::USER_AGENT, Url};
@@ -29,8 +30,6 @@ fn parse_posts(posts: Posts, use_dictionary: bool) -> Result<Vec<DownloadImage>>
 }
 
 fn fetch_posts(tags: String, limit: u8, sfw: bool) -> Result<Posts> {
-    println!("Fetching posts...");
-
     #[allow(unused_assignments)]
     let mut req_url = String::from("");
 
@@ -57,6 +56,7 @@ fn fetch_posts(tags: String, limit: u8, sfw: bool) -> Result<Posts> {
 }
 
 pub fn download(
+    loading: &Loading,
     tags: String,
     outdir: String,
     limit: u8,
@@ -67,11 +67,14 @@ pub fn download(
     let filtered = parse_posts(posts, dictionary)?;
 
     if let Err(ref _why) = read_dir(outdir.clone()) {
-        println!("Download directory does not exist...");
-        println!("Creating new Download directory.");
+        loading.warn("Download directory does not exist...");
+        loading.info("Creating new Download directory");
 
-        create_dir(outdir.clone()).expect("Cannot create directory... Are we missing permissions?")
+        create_dir(outdir.clone())
+            .with_context(|| "Cannot create directory... Are you missing permissions?")?;
     }
+
+    loading.info(format!("Downloading {} images", &filtered.len()));
 
     for post in filtered.iter() {
         let parsed_url = Url::parse(&post.url).unwrap();
@@ -82,13 +85,14 @@ pub fn download(
 
         HTTP.get(parsed_url.to_string())
             .header(USER_AGENT, "Neo, E621 Downloader")
-            .send()?
+            .send()
+            .with_context(|| "Error fetching post image".to_string())?
             .copy_to(&mut image_bytes)?;
 
         let path = Path::new(&path_to);
 
         if path.exists() {
-            println!("Duplication found, skipping...");
+            loading.warn("Duplicate found, skipping...");
             continue;
         }
 
