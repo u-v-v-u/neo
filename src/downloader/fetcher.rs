@@ -47,7 +47,7 @@ fn fetch_posts(tags: String, limit: u8, sfw: bool) -> Result<Posts> {
 
     let res = HTTP
         .get(req_url)
-        .header(USER_AGENT, "Neo, E621 Downloader")
+        .header(USER_AGENT, "Neo, E621 Downloader (github.com/inner-arrows/neo)")
         .send()?;
 
     let posts = serde_json::from_str(&res.text()?.to_owned())?;
@@ -84,7 +84,7 @@ pub fn download(
         let mut image_bytes = Vec::<u8>::with_capacity(post.size as usize);
 
         HTTP.get(parsed_url.to_string())
-            .header(USER_AGENT, "Neo, E621 Downloader")
+            .header(USER_AGENT, "Neo, E621 Downloader  (github.com/inner-arrows/neo)")
             .send()
             .with_context(|| "Error fetching post image".to_string())?
             .copy_to(&mut image_bytes)?;
