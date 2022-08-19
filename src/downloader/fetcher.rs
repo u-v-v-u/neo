@@ -11,7 +11,7 @@ use std::path::Path;
 static HTTP: Lazy<Client> = Lazy::new(Client::new);
 
 fn parse_posts(posts: Posts, use_dictionary: bool) -> Result<Vec<DownloadImage>> {
-    let mut images: Vec<DownloadImage> = Vec::new();
+    let mut images: Vec<DownloadImage> = Vec::with_capacity(posts.posts.len());
 
     let dictionary = dictionary::read()?.entries;
 
