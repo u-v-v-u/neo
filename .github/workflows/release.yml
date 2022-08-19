@@ -74,7 +74,7 @@ jobs:
       - name: Publish
         run: |
           VERSION="$(cargo pkgid | cut -d# -f2 | cut -d: -f2)"
-          if hub release show "v$VERSION" &> /dev/null; then
+          if hub release show "$VERSION" &> /dev/null; then
             echo "Release $VERSION already exists."
             exit
           fi
