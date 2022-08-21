@@ -1,5 +1,5 @@
 use crate::downloader::structures::{Dictionary, DictionaryEntry, Post};
-use anyhow::{Context, Result};
+use color_eyre::{eyre::Context, Result};
 use serde_json::{from_str, json, to_string_pretty};
 use std::{
     env,
@@ -38,7 +38,7 @@ pub fn read() -> Result<Dictionary> {
         fs_write(&path, pretty)?;
     }
 
-    let file_content = read_to_string(path).with_context(|| "Failure to read Dictionary")?;
+    let file_content = read_to_string(path).wrap_err("Failure to read Dictionary")?;
     let dictionary: Dictionary = from_str(&file_content)?;
 
     Ok(dictionary)

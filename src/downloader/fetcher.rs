@@ -1,6 +1,6 @@
 use super::{dictionary, structures::DownloadImage};
 use crate::downloader::structures::Posts;
-use anyhow::{Context, Result};
+use color_eyre::{eyre::Context, Result};
 use loading::Loading;
 use once_cell::sync::Lazy;
 use reqwest::blocking::Client;
@@ -47,7 +47,10 @@ fn fetch_posts(tags: String, limit: u8, sfw: bool) -> Result<Posts> {
 
     let res = HTTP
         .get(req_url)
-        .header(USER_AGENT, "Neo, E621 Downloader (github.com/inner-arrows/neo)")
+        .header(
+            USER_AGENT,
+            "Neo, E621 Downloader (github.com/inner-arrows/neo)",
+        )
         .send()?;
 
     let posts = serde_json::from_str(&res.text()?.to_owned())?;
@@ -71,7 +74,7 @@ pub fn download(
         loading.info("Creating new Download directory");
 
         create_dir(outdir.clone())
-            .with_context(|| "Cannot create directory... Are you missing permissions?")?;
+            .wrap_err("Cannot create directory... Are you missing permissions?")?;
     }
 
     loading.info(format!("Downloading {} images", &filtered.len()));
@@ -84,9 +87,12 @@ pub fn download(
         let mut image_bytes = Vec::<u8>::with_capacity(post.size as usize);
 
         HTTP.get(parsed_url.to_string())
-            .header(USER_AGENT, "Neo, E621 Downloader  (github.com/inner-arrows/neo)")
+            .header(
+                USER_AGENT,
+                "Neo, E621 Downloader  (github.com/inner-arrows/neo)",
+            )
             .send()
-            .with_context(|| "Error fetching post image".to_string())?
+            .wrap_err("Error fetching post image")?
             .copy_to(&mut image_bytes)?;
 
         let path = Path::new(&path_to);
@@ -103,7 +109,7 @@ pub fn download(
 }
 
 fn write_image(path: &str, bytes: &[u8]) -> Result<()> {
-    write(path, bytes)?;
+    write(path, bytes).wrap_err("Failed to write an Image")?;
 
     Ok(())
 }
