@@ -21,11 +21,13 @@ fn main() -> Result<()> {
     downloader::fetcher::download(
         &loader,
         config.tags,
-        config.output.unwrap_or("./downloads".to_string()),
+        config.output.unwrap_or_else(|| "./downloads".to_string()),
         config.limit,
-        config.sfw.unwrap_or(false),
+        config.sfw.unwrap_or_else(|| false),
         config.dictionary.unwrap_or(false),
     )?;
 
-    Ok(loader.end())
+    loader.end();
+
+    Ok(())
 }
