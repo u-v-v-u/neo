@@ -6,3 +6,11 @@ enabled = true
 
   [analyzers.meta]
   msrv = "1.30.0"
+
+[[analyzers]]
+name = "shell"
+enabled = true
+
+[[transformers]]
+name = "rustfmt"
+enabled = true
