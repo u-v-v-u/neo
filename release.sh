@@ -5,7 +5,7 @@ if [[ -z "$1" ]]; then
     exit
 fi
 
-git-cliff --tag $1 > CHANGELOG.md
+git-cliff --tag "$1" > CHANGELOG.md
 git add ./CHANGELOG.md
 git commit -m "chore(release): $1"
 git tag "$1"
