@@ -5,7 +5,7 @@ use loading::Loading;
 use once_cell::sync::Lazy;
 use reqwest::blocking::Client;
 use reqwest::{header::USER_AGENT, Url};
-use std::fs::{create_dir, read_dir, write};
+use std::fs::{create_dir_all, read_dir, write};
 use std::path::Path;
 
 static HTTP: Lazy<Client> = Lazy::new(Client::new);
@@ -73,7 +73,7 @@ pub fn download(
         loading.warn("Download directory does not exist...");
         loading.info("Creating new Download directory");
 
-        create_dir(outdir.clone())
+        create_dir_all(outdir.clone())
             .wrap_err("Cannot create directory... Are you missing permissions?")?;
     }
 
