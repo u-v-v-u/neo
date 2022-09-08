@@ -19,7 +19,7 @@ pub struct DictionaryEntry {
     pub md5: String,
     pub rating: String,
     pub url: String,
-    pub ext: String
+    pub ext: String,
 }
 
 #[derive(Debug, Deserialize, Serialize)]
