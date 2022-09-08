@@ -2,9 +2,8 @@ name: Release executables
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
-    branches: [ main ]
+    tags:
+      - '*.*.*'
 
 jobs:
   build-windows:
@@ -68,6 +67,12 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v3
+      - name: Generate a changelog
+        uses: orhun/git-cliff-action@v1
+        id: git-cliff
+        with:
+          config: cliff.toml
+          args: -v --latest --strip header
       - uses: actions/download-artifact@v3
         with:
           path: release/
@@ -78,12 +83,10 @@ jobs:
             echo "Release $VERSION already exists."
             exit
           fi
-
-          mv release/x86_64-unknown-linux-gnu/neo release/x86_64-unknown-linux-gnu/x86_64-unknown-linux-musl
-          mv release/x86_64-pc-windows-gnu/neo.exe release/x86_64-pc-windows-gnu/x86_64-pc-windows-gnu.exe
-
+          mv release/x86_64-unknown-linux-gnu/template release/x86_64-unknown-linux-gnu/x86_64-unknown-linux-musl
+          mv release/x86_64-pc-windows-gnu/template.exe release/x86_64-pc-windows-gnu/x86_64-pc-windows-gnu.exe
           hub release create --commitish '${{ github.sha }}' \
             --message "$VERSION" \
             --attach release/x86_64-pc-windows-gnu/x86_64-pc-windows-gnu.exe \
             --attach release/x86_64-unknown-linux-gnu/x86_64-unknown-linux-musl \
-            "$VERSION"
+            '${{ steps.git-cliff.outputs.changelog }}'
