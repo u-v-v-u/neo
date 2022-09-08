@@ -7,8 +7,7 @@ use std::path::Path;
 pub fn read(path: &Path) -> Result<Configuration> {
     let reader = File::open(path).wrap_err("Non-Existent configuration path");
 
-    let conf: Result<Configuration> =
-        from_reader(reader?).wrap_err("Failed to read configuration");
+    let conf: Result<Configuration> = from_reader(reader?).wrap_err("Failed to read configuration");
 
     return conf;
 }
