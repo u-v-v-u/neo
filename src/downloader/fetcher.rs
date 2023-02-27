@@ -34,13 +34,9 @@ fn fetch_posts(tags: String, limit: u8, sfw: bool) -> Result<Posts> {
     let mut req_url = String::from("");
 
     req_url = if sfw {
-        format!(
-            "https://e926.net/posts.json?tags=limit:{limit} order:random -young {tags}"
-        )
+        format!("https://e926.net/posts.json?tags=limit:{limit} order:random -young {tags}")
     } else {
-        format!(
-            "https://e621.net/posts.json?tags=limit:{limit} order:random -young {tags}"
-        )
+        format!("https://e621.net/posts.json?tags=limit:{limit} order:random -young {tags}")
     };
 
     let res = HTTP
