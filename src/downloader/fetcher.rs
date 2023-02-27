@@ -35,13 +35,11 @@ fn fetch_posts(tags: String, limit: u8, sfw: bool) -> Result<Posts> {
 
     req_url = if sfw {
         format!(
-            "https://e926.net/posts.json?tags=limit:{} order:random -young {}",
-            limit, tags
+            "https://e926.net/posts.json?tags=limit:{limit} order:random -young {tags}"
         )
     } else {
         format!(
-            "https://e621.net/posts.json?tags=limit:{} order:random -young {}",
-            limit, tags
+            "https://e621.net/posts.json?tags=limit:{limit} order:random -young {tags}"
         )
     };
 
@@ -53,7 +51,7 @@ fn fetch_posts(tags: String, limit: u8, sfw: bool) -> Result<Posts> {
         )
         .send()?;
 
-    let posts = serde_json::from_str(&res.text()?.to_owned())?;
+    let posts = serde_json::from_str(&res.text()?)?;
 
     Ok(posts)
 }
@@ -66,7 +64,7 @@ pub fn download(
     sfw: bool,
     dictionary: bool,
 ) -> Result<()> {
-    let posts = fetch_posts(tags.clone(), limit, sfw)?;
+    let posts = fetch_posts(tags, limit, sfw)?;
     let filtered = parse_posts(posts, dictionary)?;
 
     if let Err(ref _why) = read_dir(outdir.clone()) {
@@ -81,8 +79,8 @@ pub fn download(
 
     for post in filtered.iter() {
         let parsed_url = Url::parse(&post.url).unwrap();
-        let name = parsed_url.path().split("/").skip(4).collect::<Vec<&str>>()[0];
-        let path_to = format!("{}/{}", outdir, name);
+        let name = parsed_url.path().split('/').skip(4).collect::<Vec<&str>>()[0];
+        let path_to = format!("{outdir}/{name}");
 
         let mut image_bytes = Vec::<u8>::with_capacity(post.size as usize);
 
