@@ -764,9 +764,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.102"
+version = "1.0.103"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "b5062a995d481b2308b6064e9af76011f2921c35f97b0468811ed9f6cd91dfed"
+checksum = "d03b412469450d4404fe8499a268edd7f8b79fecb074b0d812ad64ca21f4031b"
 dependencies = [
  "itoa",
  "ryu",
@@ -787,9 +787,9 @@ dependencies = [
 
 [[package]]
 name = "serde_yaml"
-version = "0.9.22"
+version = "0.9.23"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "452e67b9c20c37fa79df53201dc03839651086ed9bbe92b3ca585ca9fdaa7d85"
+checksum = "da6075b41c7e3b079e5f246eb6094a44850d3a4c25a67c581c80796c80134012"
 dependencies = [
  "indexmap 2.0.0",
  "itoa",
