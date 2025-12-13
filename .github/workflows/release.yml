@@ -27,7 +27,7 @@ jobs:
       run: earthly --version
     - name: Run build
       run: earthly +build-windows --use-inline-cache --save-inline-cache
-    - uses: actions/upload-artifact@v5
+    - uses: actions/upload-artifact@v6
       with:
         name: x86_64-pc-windows-gnu
         path: ${{ github.workspace }}/release/
@@ -54,7 +54,7 @@ jobs:
       run: earthly --version
     - name: Run build
       run: earthly +build-linux --use-inline-cache --save-inline-cache
-    - uses: actions/upload-artifact@v5
+    - uses: actions/upload-artifact@v6
       with:
         name: x86_64-unknown-linux-gnu
         path: ${{ github.workspace }}/release
@@ -73,7 +73,7 @@ jobs:
         with:
           config: cliff.toml
           args: -v --latest --strip header
-      - uses: actions/download-artifact@v6
+      - uses: actions/download-artifact@v7
         with:
           path: release/
       - name: Publish
